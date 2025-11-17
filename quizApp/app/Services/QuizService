@@ -1,0 +1,49 @@
+<?php
+namespace App\Services;
+
+use App\Models\Quiz;
+use App\Models\Question;
+use App\Models\Answer;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+class QuizService
+{
+    public function createQuiz(string $title, array $questionsData): Quiz
+    {
+        return DB::transaction(function () use ($title, $questionsData) {
+            $quiz = Quiz::create([
+                'title' => $title,
+                'num_questions' => count($questionsData),
+            ]);
+
+            foreach ($questionsData as $qData) {
+                $question = $quiz->questions()->create([
+                    'question_text' => $qData['question_text'],
+                ]);
+
+                $question->answers()->createMany($qData['answers']);
+            }
+
+            return $quiz->load('questions.answers');
+        });
+    }
+
+    public function getQuiz(int $quizId): Quiz
+    {
+        return Quiz::with('questions.answers')->findOrFail($quizId);
+    }
+
+    public function getAllQuizzes()
+    {
+        return Quiz::all();
+    }
+
+    public function deleteQuiz(int $quizId): void
+    {
+        DB::transaction(function () use ($quizId) {
+            $quiz = Quiz::findOrFail($quizId);
+            $quiz->delete();
+        });
+    }
+}
