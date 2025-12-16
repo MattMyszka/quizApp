@@ -7,6 +7,8 @@ $quiz = Quiz::with('questions.answers')->find($quizID);
 $quizDataJson = json_encode($quiz->questions);
 @endphp
 
+@extends('layouts.mainlayout')
+@section('content')
 
 <head>
     <meta charset="UTF-8">
@@ -43,7 +45,7 @@ $quizDataJson = json_encode($quiz->questions);
     </div>
 
     <!-- Wynik końcowy -->
-    <<div class="result-overlay">
+    <div class="result-overlay">
     <div class="result-box">
         <div class="result-title">Twój wynik</div>
         <div class="result-text" id="result-text"></div>
@@ -65,7 +67,7 @@ $quizDataJson = json_encode($quiz->questions);
 
     function loadQuestion() {
         const q = quizData[currentIndex];
-
+       
         // Obrazek
         const imgContainer = document.querySelector('.question-image');
         const imgEl = imgContainer?.querySelector('img');
@@ -81,6 +83,13 @@ $quizDataJson = json_encode($quiz->questions);
 
         // Odpowiedzi
         const answersGrid = document.querySelector('.answers-grid');
+        const answerCount = q.answers.length;
+
+        answersGrid.classList.remove('cols-2', 'cols-3');
+
+        if (answerCount <= 4) {answersGrid.classList.add('cols-2');} 
+        else if (answerCount >= 5) {answersGrid.classList.add('cols-3');}
+
         answersGrid.innerHTML = '';
 
         q.answers.forEach(ans => {
@@ -145,9 +154,10 @@ $quizDataJson = json_encode($quiz->questions);
         }
     }
 
-    // Start
     loadQuestion();
 </script>
 
 </body>
 </html>
+
+@endsection

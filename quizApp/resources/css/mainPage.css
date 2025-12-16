@@ -1,0 +1,106 @@
+/* resources/css/mainPage.css */
+
+/* Układ siatki dla quizów */
+.quiz-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem; 
+}
+
+/* Ustawienia responsywne */
+@media (min-width: 640px) { /* sm: */
+    .quiz-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) { /* lg: */
+    .quiz-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1280px) { /* xl: */
+    .quiz-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Główny kontener karty quizu - KOREKTA WYSOKOŚCI */
+.quiz-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+
+    /* Wymuszenie spójnej struktury pionowej */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+.quiz-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Sekcja obrazka/placeholderu */
+.quiz-card-image-section {
+    background-color: #e5e7eb;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-weight: bold;
+    font-size: 1.125rem;
+}
+
+.quiz-card-image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Sekcja Treści Quizu */
+.quiz-card-content {
+    padding: 1rem; 
+    padding-bottom: 2rem; /* Zwiększono dolny padding z 1rem na 2rem, aby odsunąć treść od przycisku */
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Kontener Tytułu Quizu - KOREKTA: Stała Wysokość i Elipsa */
+.quiz-title-fixed-height {
+    height: 3rem; 
+    line-height: 1.5rem; 
+    overflow: hidden;
+    margin-bottom: 1rem; /* Zwiększono margines pod tytułem z 0.5rem na 1rem */
+
+    /* Właściwości dla wieloliniowej elipsy (kompatybilność z Webkit) */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; 
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+}
+
+/* Sekcja przycisku "Rozpocznij" */
+.quiz-card-start-button {
+    background-color: #2563eb;
+    color: white;
+    padding-top: 0.75rem; 
+    padding-bottom: 0.75rem; 
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background-color 150ms ease-in-out;
+}
+
+.quiz-card-start-button:hover {
+    background-color: #1d4ed8;
+}
+
+.quiz-card.is-expanded 
+{ 
+    transform: scale(2); 
+    z-index: 10; 
+}

@@ -4,49 +4,83 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Quiz;
+use App\Models\Question;
+use App\Models\Answer;
+use Database\Factories\AnswerFactory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Faker\Factory as Faker;
+use Carbon\Carbon;
 
 class QuizSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::transaction(function () {
-            //Quiz
-            $quiz = Quiz::create([
-                'title' => 'Przykładowy quiz 3',
-                'num_questions' => 3
-            ]);
+        $faker = Faker::create();
 
-            // Pytanie 1
-            $question1 = $quiz->questions()->create([
-                'question_text' => 'Gdzie mieszka Pani Kasia'
-            ]);
-            $question1->answers()->createMany([
-                ['answer_text' => 'Dąbrowa', 'is_correct' => true],
-                ['answer_text' => 'Poznań', 'is_correct' => false],
-                ['answer_text' => 'Bobowicko', 'is_correct' => true],
-                ['answer_text' => 'Zielona Góra', 'is_correct' => false]
-            ]);
+        $imageFileName = 'seeder_image.png';
+        $imagePath = 'images/quizzes/' . $imageFileName;
+        $imageUrl = null;
 
-            // Pytanie 2
-            $question2 = $quiz->questions()->create([
-                'question_text' => 'Jaki alkohol zrobili Pani Kasia z Panem Maciejem'
-            ]);
-            $question2->answers()->createMany([
-                ['answer_text' => 'dobry', 'is_correct' => true],
-                ['answer_text' => 'mirabelkowy', 'is_correct' => true],
-            ]);
+        $ileQuizów = (int)5;
 
-            //Pytanie 3
-            $question3 = $quiz->questions()->create([
-                'question_text' => 'Ile tatuaży ma Pani Kasia'
-            ]);
-            $question3->answers()->createMany([
-                ['answer_text' => 'dużo', 'is_correct' => true],
-                ['answer_text' => 'w chuj', 'is_correct' => true],
-                ['answer_text' => 'kto wie', 'is_correct' => true],
-                ['answer_text' => 'cztery', 'is_correct' => false],
-            ]);
+        if (Storage::disk('public')->exists($imagePath)) {
+            $imageUrl = Storage::url($imagePath);
+        } else {
+            $this->command->warn("Ostrzeżenie: Plik obrazka nie znaleziony w: " . $imagePath);
+        }
+
+        //czyszczenie tabeli dla seedera.
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Answer::truncate(); 
+        Question::truncate();
+        Quiz::truncate(); 
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        $this->command->info('Wyczyszczono tabele quizów, pytań i odpowiedzi.');
+
+        //seeding
+        DB::transaction(function () use ($imageUrl, $faker, $ileQuizów) { 
+            
+            Quiz::factory($ileQuizów)
+                ->create()
+                ->each(function (Quiz $quiz) use ($imageUrl) {
+                    
+                    $quiz->title = "Przykładowy quiz #$quiz->id";
+
+                    if ($imageUrl) {
+                        $quiz->image_url = $imageUrl;
+                        $quiz->save();
+                    }
+
+                    $numQuestions = rand(2, 20);
+                    $questions = Question::factory($numQuestions)->create([
+                        'quiz_id' => $quiz->id,
+                    ]);
+
+                    $quiz->num_questions = $numQuestions;
+                    $quiz->save();
+
+                    $questions->each(function (Question $question) { 
+                        
+                        $numAnswers = rand(2, 10);
+                        $answers = AnswerFactory::new()->count($numAnswers)->make([
+                            'question_id' => $question->id 
+                        ]);
+                        
+                        $answersData = $answers->map(function ($answer, $key) use ($numAnswers) {
+                            $data = $answer->toArray();
+                            
+                            if ($key === 0) { 
+                                $data['is_correct'] = true;
+                            }
+                            return $data;
+                        })->toArray();
+                        
+                        $question->answers()->createMany($answersData);
+                    });
+                });
+            
+            $this->command->info('Pomyślnie wygenerowano losowych quizów:'. $ileQuizów);
         });
     }
 }
