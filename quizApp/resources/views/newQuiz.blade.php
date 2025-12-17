@@ -35,7 +35,7 @@
         </div>
 
         <div id="questions-container" class="space-y-6">
-            {{-- JS wstrzyknie tutaj .question-card --}}
+            {{-- JS wstrzykuje .question-card --}}
         </div>
 
         <div class="mt-10 flex justify-center">

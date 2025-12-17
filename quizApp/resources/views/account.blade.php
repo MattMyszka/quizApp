@@ -20,7 +20,7 @@
             </form>
         </div>
 
-        {{-- Sekcja Zarządzania Quizami - TERAZ BEZPIECZNIE WEWNĄTRZ @auth --}}
+        {{-- Sekcja Zarządzania Quizami --}}
         <div class="mt-12 border-t pt-8">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
                 <h3 class="text-2xl font-bold text-gray-800">Twoje Quizy</h3>

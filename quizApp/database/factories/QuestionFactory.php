@@ -23,10 +23,8 @@ class QuestionFactory extends Factory
     public function definition(): array
     {
         return [
-            // Losowy tekst pytania, kończący się znakiem zapytania
             'question_text' => $this->faker->sentence(rand(5, 10), true) . '?',
             
-            // Definiowanie stanu domyślnego relacji (jeśli nie jest podany w seederze)
             'quiz_id' => Quiz::factory(), 
         ];
     }

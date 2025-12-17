@@ -19,13 +19,10 @@ $quizDataJson = json_encode($quiz->questions);
 
 <body>
 <div id="quiz-app">
-    
-<!-- Tytuł quizu -->
     <div class="quiz-title">
         {{ $quiz->title }}
     </div>
 
-    <!-- Kontener na pytania -->
     <div id="dynamic-question-container">
         <div class="question-box">
             <div class="question-image" style="display: none;">
@@ -39,12 +36,10 @@ $quizDataJson = json_encode($quiz->questions);
         </div>
     </div>
 
-    <!-- Pasek postępu -->
     <div class="progress-container">
         <div class="progress-bar" style="width: 0%;"></div>
     </div>
 
-    <!-- Wynik końcowy -->
     <div class="result-overlay">
     <div class="result-box">
         <div class="result-title">Twój wynik</div>

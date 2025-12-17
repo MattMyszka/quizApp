@@ -23,13 +23,10 @@ class AnswerFactory extends Factory
     public function definition(): array
     {
         return [
-            // Losowy, krótki tekst odpowiedzi
             'answer_text' => $this->faker->sentence(rand(1, 3), true),
             
-            // Domyślnie ustawiamy na false
             'is_correct' => false, 
             
-            // Definiowanie stanu domyślnego relacji
             'question_id' => Question::factory(),
         ];
     }

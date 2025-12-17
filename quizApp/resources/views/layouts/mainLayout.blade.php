@@ -14,17 +14,14 @@
     {{-- Pasek główny --}}
     <nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center">
         
-        {{-- Lewa strona – pusta, żeby logo było idealnie na środku --}}
         <div class="w-1/3"></div>
 
-        {{-- Środek – "QuizApp" jako przycisk/kliknięcie --}}
         <div class="w-1/3 flex justify-center">
             <a href="{{ route('mainPage') }}" class="text-2xl font-bold text-blue-600 hover:text-blue-800">
                 QuizApp
             </a>
         </div>
 
-        {{-- Prawa strona – ikona użytkownika --}}
         <div class="w-1/3 flex justify-end">
             <a href="{{ route('account') }}">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"

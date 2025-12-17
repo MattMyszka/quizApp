@@ -28,7 +28,7 @@ class AuthController extends Controller
             'password' => Hash::make($credentials['password']),
         ]);
 
-        Auth::login($user); // Automatyczne zalogowanie po rejestracji
+        Auth::login($user);
 
         return redirect()->route('account')->with('success', 'Konto zostało utworzone!');
     }
