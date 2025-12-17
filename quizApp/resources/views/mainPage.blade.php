@@ -11,20 +11,17 @@
         
         <div class="quiz-card" data-quiz-id="{{ $quiz->id }}">
             
-            {{-- Cały kontener jest klikalny (oprócz przycisku) --}}
             <a href="{{ route('quiz',$quiz->id) }}" class="block quiz-link">
                 
                 <div class="quiz-card-image-section">
                     @if ($quiz->image_url)
                         <img src="{{ $quiz->image_url }}" alt="Obrazek dla quizu {{ $quiz->title }}">
                     @else
-                        {{-- Upewnij się, że ten span nie ma już klasy "p-4", która była z Tailwind --}}
                         <span>Obrazek z bazy (Placeholder)</span>
                     @endif
                 </div>
 
                 <div class="quiz-card-content">
-                    {{-- Używamy klasy z ustaloną wysokością i elipsą --}}
                     <h2 class="quiz-title-fixed-height text-xl font-extrabold text-gray-800">
                         {{ $quiz->title }}
                     </h2>
