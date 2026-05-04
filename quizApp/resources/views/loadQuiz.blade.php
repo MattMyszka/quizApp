@@ -141,6 +141,21 @@ $quizDataJson = json_encode($quiz->questions);
         document.getElementById('result-text').innerText = `Poprawnych odpowiedzi: ${correctCount} / ${total}`;
         document.querySelector('.progress-bar').style.width = '100%';
 
+        fetch('/notify-results', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Laravel wymaga tego do bezpieczeństwa
+            },
+            body: JSON.stringify({
+                score: correctCount,
+                total: total,
+                title: "{{ $quiz->title }}"
+            })
+        })
+        .then(response => console.log('Powiadomienie wysłane'))
+        .catch(error => console.error('Błąd:', error));
+
         const mainButton = document.getElementById('main-page-button');
         if (mainButton) {
             mainButton.addEventListener('click', () => {

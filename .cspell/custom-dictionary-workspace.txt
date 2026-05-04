@@ -1,0 +1,6 @@
+# Custom Dictionary Words
+Laravel
+Vite
+taskkill
+WINDOWTITLE
+quizapp
